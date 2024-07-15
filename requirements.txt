@@ -1,1 +1,3 @@
-mysqlclient==1.3.0
+streamlit
+mysql-connector-python
+

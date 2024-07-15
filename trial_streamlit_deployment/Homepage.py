@@ -1,14 +1,44 @@
-# specsheet/Homepage.py
-# streamlit_app.py
-
 import streamlit as st
+import mysql.connector
 
-# Initialize connection.
-conn = st.connection('mysql', type='sql')
+# Connect to MySQL database
+def connect_to_db():
+    return mysql.connector.connect(
+        host="192.168.10.142",
+        user="Lenard",
+        password="Hondafd14",
+        database="Iguzzini"
+    )
 
-# Perform query.
-df = conn.query('SELECT * from mytable;', ttl=600)
+# Function to fetch data from database
+def fetch_data():
+    conn = connect_to_db()
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT * FROM products")
+    data = cursor.fetchall()
+    
+    cursor.close()
+    conn.close()
+    
+    return data
 
-# Print results.
-for row in df.itertuples():
-    st.write(f"{row.name} has a :{row.pet}:")
+# Main function to run the app
+def main():
+    st.title('Product Viewer')
+
+    # Fetch data from the database
+    data = fetch_data()
+
+    # Display the data
+    if data:
+        st.write('## Products')
+        for row in data:
+            st.write(f"**Product Name:** {row[1]}")
+            st.write(f"**Price:** ${row[2]}")
+            st.write('---')
+    else:
+        st.warning('No products found.')
+
+if __name__ == '__main__':
+    main()
