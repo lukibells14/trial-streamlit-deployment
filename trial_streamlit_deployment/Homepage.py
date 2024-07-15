@@ -15,7 +15,7 @@ def fetch_data():
     conn = connect_to_db()
     cursor = conn.cursor()
     
-    cursor.execute("SELECT * FROM products")
+    cursor.execute("SELECT * FROM product LIMIT 20")
     data = cursor.fetchall()
     
     cursor.close()
